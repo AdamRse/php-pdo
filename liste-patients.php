@@ -6,13 +6,15 @@ include './classes/Bdd-Exo-2.class.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exo PDO</title>
+    <title>Afficher les patients</title>
 </head>
 <body>
+    <h1>Afficher la liste des patients</h1>
+    <?php
+    $Bdd = new Bdd();
+    $Bdd->afficherListePatients();
+    ?>
     
-    <ul>
-        <li><a href="./ajout-patient.php">Ajouter un patient</a></li>
-        <li><a href="./liste-patients.php">Afficher les patients</a></li>
-    </ul>
+    <a href="./ajout-patient.php">Ajouter un patient</a>
 </body>
 </html>
