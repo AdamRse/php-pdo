@@ -12,6 +12,9 @@ class Bdd extends PDO{
         parent::__construct($connectionString, self::user, self::pw);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
+    public function querySelectAll($requete){
+        return $this->afficherSelectWhile($requete, false);
+    }
     private function afficherSelectWhile($requete, $afficher = true){
         $retour = array();
         $rq = $this->query($requete);
@@ -31,8 +34,12 @@ class Bdd extends PDO{
         }
         return $retour;
     }
-    public function ajouterPatient($tab){//1
+    public function ajouterPatient($tab){
         $rq = $this->prepare("INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail)");
+        return $rq->execute($tab);
+    }
+    public function ajouterRdv($tab){
+        $rq = $this->prepare("INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, :idPatients)");
         return $rq->execute($tab);
     }
     public function afficherListePatients(){
@@ -51,10 +58,35 @@ class Bdd extends PDO{
     public function afficherPatient($id){
         $rq = $this->prepare("SELECT * FROM patients WHERE id = :id");
         $rq->execute(array("id" => $id));
-        $tab = $rq->fetch();
+        $patient = $rq->fetch();
         ?>
-        
+        <div>
+            <h3><?= $patient['lastname'].' '.$patient['firstname'] ?></h2>
+            <ul>
+                <li>Date de naissance : <?= $patient['birthdate'] ?></li>
+                <li>Téléphone : <?= $patient['phone'] ?></li>
+                <li>E-mail : <?= $patient['mail'] ?></li>
+            </ul>
+            <hr/>
+        </div>
         <?php
+    }
+    //SELECT a.dateHour ,p.lastname ,p.firstname FROM appointments as a LEFT JOIN patients as p ON a.idPatients = p.id;
+    public function afficherListeRDV(){
+        $listeRdv = $this->afficherSelectWhile("SELECT id, dateHour FROM appointments;", false);
+        $i=0;
+        foreach ($listeRdv as $rdv){
+            ?>
+            <ul>
+                <li>
+                    <a href=".<?= $_SERVER["SCRIPT_NAME"].'?id='.$rdv["id"] ?>">
+                        <?php $dt = new DateTime($rdv["dateHour"]); echo ++$i.") Le ".$dt->format('m/d/Y à H:i') ?>
+                    </a>
+                </li>
+            </ul>
+            <hr/>
+            <?php
+        }
     }
     
 }

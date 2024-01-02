@@ -9,10 +9,6 @@ include './classes/Bdd-Exo-2.class.php';
     <title>Exo PDO</title>
 </head>
 <body>
-    
-    <ul>
-        <li><a href="./ajout-patient.php">Ajouter un patient</a></li>
-        <li><a href="./liste-patients.php">Afficher les patients</a></li>
-    </ul>
+    <?php include "./menu.php" ?>
 </body>
 </html>

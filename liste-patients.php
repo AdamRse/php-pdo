@@ -15,6 +15,6 @@ include './classes/Bdd-Exo-2.class.php';
     $Bdd->afficherListePatients();
     ?>
     
-    <a href="./ajout-patient.php">Ajouter un patient</a>
+    <?php include "./menu.php" ?>
 </body>
 </html>

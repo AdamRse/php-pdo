@@ -12,7 +12,7 @@ include './classes/Bdd-Exo-2.class.php';
     <?php
     if(empty($_GET)){
         ?>
-        <form action="./<?= $_SERVER["SCRIPT_NAME"] ?>" method="get">
+        <form action=".<?= $_SERVER["SCRIPT_NAME"] ?>" method="get">
             <input type="text" name="lastName" placeholder="Nom">
             <input type="text" name="firstName" placeholder="Prénom">
             <input type="date" name="birthdate">
@@ -49,6 +49,6 @@ include './classes/Bdd-Exo-2.class.php';
         }
     }
     ?>
-    <a href="./liste-patients.php">Afficher les patients</a>
+    <?php include "./menu.php" ?>
 </body>
 </html>
