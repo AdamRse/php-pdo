@@ -13,15 +13,14 @@ include './classes/Bdd-Exo-2.class.php';
     if(empty($_GET)){
         ?>
         <form action=".<?= $_SERVER["SCRIPT_NAME"] ?>" method="get">
-        <h3>Patient</h3>
-            <input type="text" name="lastName" placeholder="Nom">
-            <input type="text" name="firstName" placeholder="Prénom">
-            <input type="date" name="birthdate">
-            <input type="number" name="phone" placeholder="Téléphone">
-            <input type="email" name="mail" placeholder="e-mail">
-        <h3>RDV</h3>
-        <p>Date du RDV : <input type="datetime-local" name="dateHour"></p>
-
+            <h3>Patient</h3>
+                <input type="text" name="lastName" placeholder="Nom">
+                <input type="text" name="firstName" placeholder="Prénom">
+                <input type="date" name="birthdate">
+                <input type="number" name="phone" placeholder="Téléphone">
+                <input type="email" name="mail" placeholder="e-mail">
+            <h3>RDV</h3>
+            <p>Date du RDV : <input type="datetime-local" name="dateHour"></p>
             <input type="submit" value="Envoyer">
         </form>
         <?php

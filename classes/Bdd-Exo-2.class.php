@@ -135,8 +135,8 @@ class Bdd extends PDO{
         return $retour;
     }
     public function modifierPatient($tab){
-        $rq = $this->prepare("UPDATE patients SET lastname = :lastname, idPatients = :idPatients WHERE id = :modifier");
-        return $rq->execute(array("id" => $id));
+        $rq = $this->prepare("UPDATE patients SET lastname = :lastname, idPatients = :idPatients, birthdate = :birthdate, phone = :phone, mail = :mail WHERE id = :modifier");
+        return $rq->execute($tab);
     }
     public function supprimerPatient($id){
         $rq = $this->prepare("DELETE appointments, patients FROM appointments LEFT JOIN patients ON appointments.idPatients = patients.id WHERE appointments.idPatients = :id");

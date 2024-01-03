@@ -49,7 +49,7 @@ include './classes/Bdd-Exo-2.class.php';
     }
     else{
         ?>
-        <p>Aucun in passé.</p>
+        <p>Aucun rdv passé.</p>
         <?php
     }
     

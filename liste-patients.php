@@ -25,6 +25,47 @@ include './classes/Bdd-Exo-2.class.php';
             <?php
         }
     }
+    elseif(!empty($_GET['modifier'])){
+        $allPatient = $Bdd->querySelectAll("SELECT * FROM patients WHERE id = ".$_GET['modifier']);
+        $incomplet = "";
+        foreach($_GET as $k => $v){
+            if(empty($v)) $incomplet .= "<br/>- valeur <b>$k</b> manquante.";
+        }
+        if(isset($_GET['firstName']) || isset($_GET['lastName']) || isset($_GET['birthdate']) || isset($_GET['phone']) || isset($_GET['mail'])){
+            if(empty($incomplet)){
+                if($Bdd->modifierPatient($_GET)){
+                    ?>
+                    <p>Patient <?= $_GET['lastName'].' '.$_GET['firstName'] ?> bien modifié !</p>
+                    <ul>
+                        <li>Date de naissance : <?= $_GET['birthdate'] ?> </li>
+                        <li>Téléphone : <?= $_GET['phone'] ?> </li>
+                        <li>E-mail: <?= $_GET['mail'] ?> </li>
+                    </ul>
+                    <?php
+                }
+            }
+            else{
+                ?>
+                <p>Erreur de formulaire :<?= $incomplet ?></p>
+                <?php
+            }
+        }
+        else{
+        ?> 
+        <h1>Modifier la fiche de <?= $allPatient[0]["lastName"], $allPatient[0]["firstName"] ?></h1>
+            <form action=".<?= $_SERVER["SCRIPT_NAME"] ?>" method="get">
+            <h3>Patient</h3>
+                <input type="hidden" name="modifier" value="<?= $allPatient[0]["id"] ?>">
+                <input type="text" name="lastName" placeholder="Nom" value="<?= $allPatient[0]["lastName"] ?>">
+                <input type="text" name="firstName" placeholder="Prénom" value="<?= $allPatient[0]["firstName"] ?>">
+                <input type="date" name="birthdate" value="<?= $allPatient[0]["birthdate"] ?>">
+                <input type="number" name="phone" placeholder="Téléphone" value="<?= $allPatient[0]["phone"] ?>">
+                <input type="email" name="mail" placeholder="e-mail" value="<?= $allPatient[0]["mail"] ?>">
+                <input type="submit" value="Modifier">
+            </form>
+        <?php
+        }
+    }
     else{
         if(!empty($_GET['cherche'])){
             $cherche = $Bdd->chercherPatient($_GET['cherche']);
@@ -49,7 +90,7 @@ include './classes/Bdd-Exo-2.class.php';
                         <hr/>
                         <?php
                     }
-                    ?>
+                    ?>a 
                 </div>
                 <?php
             }
