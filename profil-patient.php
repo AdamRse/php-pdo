@@ -9,17 +9,20 @@ include './classes/Bdd-Exo-2.class.php';
     <title>patients</title>
 </head>
 <body>
-    <h1>Afficher la liste des patients</h1>
+    <h1>Patient</h1>
     <?php
-    if(empty($_GET['idi'])){
+    if(!empty($_GET['id'])){
         $Bdd = new Bdd();
         $Bdd->afficherPatient($_GET['id']);
+    }
+    elseif(!empty($_GET['modifier'])){
+        $Bdd = new Bdd();
+        $Bdd->modifierPatient($_GET['modifier']);
     }
     else{
         echo "<p>Aucun ID passé en get.</p><a href=\"./liste-patients.php\">Retour</a>";
     }
     ?>
-    
-    <a href="./ajout-patient.php">Ajouter un patient</a>
+    <?php include "./menu.php" ?>
 </body>
 </html>
