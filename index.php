@@ -1,14 +1,6 @@
 <?php
 include './classes/Bdd-Exo-2.class.php';
+include_once './page/header.php';
+include_once "./menu.php";
+include_once "./page/footer.php";
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exo PDO</title>
-</head>
-<body>
-    <?php include "./menu.php" ?>
-</body>
-</html>
