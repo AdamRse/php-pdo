@@ -1,6 +1,8 @@
 <?php
 class Bdd extends PDO{
 
+    private $_taillePage = 10;
+
     private const sgbd = 'mysql';
     private const server = "127.0.0.1";
     private const db = "hospitalE2N";
@@ -38,7 +40,7 @@ class Bdd extends PDO{
         return $retour;
     }
     public function ajouterPatient($tab){
-        $tab['firstname']=$this->majFirst($tab['firstname']);
+        $tab['firstName']=$this->majFirst($tab['firstName']);
         $tab['lastName']=$this->majFirst($tab['lastName']);
         $rq = $this->prepare("INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail)");
         return $rq->execute($tab);
@@ -47,8 +49,15 @@ class Bdd extends PDO{
         $rq = $this->prepare("INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, :idPatients)");
         return $rq->execute($tab);
     }
-    public function afficherListePatients(){
-        $patients = $this->afficherSelectWhile("SELECT * FROM patients", false);
+    public function ajoutPatientEtRdv($tab){
+
+    }
+    public function afficherListePatients($page = 1){
+        $patients = $this->afficherSelectWhile("SELECT * FROM patients LIMIT ".((($page-1)*$this->_taillePage)).", ".$this->_taillePage."", false);
+        $rq = $this->query("SELECT count(id) as nbEntrees FROM patients");
+        $nbPatients = $rq->fetch(PDO::FETCH_COLUMN);
+        $lastPage = ceil($nbPatients/$this->_taillePage);
+        if($page>$lastPage) $page = $lastPage;
         foreach ($patients as $patient){
             ?>
             <a href="./profil-patient.php?id=<?= $patient["id"] ?>">
@@ -58,6 +67,27 @@ class Bdd extends PDO{
                     - <a href="./liste-patients.php?supprimer=<?= $patient["id"] ?>">Supprimer</a>
                 </p>
             <hr/>
+            <?php
+        }
+        if($nbPatients > $this->_taillePage){
+            ?>
+            <div style="text-align: center; margin-top: 30px;">
+                <?php
+                if($page>1){
+                    ?>
+                    <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page-1) ?>">Page précédente (<?= $page-1 ?>)</a> |
+                    <?php
+                }
+                ?>
+                PAGE <?= $page ?>
+                <?php
+                if($page<$lastPage){
+                    ?>
+                    | <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page+1) ?>">Page suivante (<?= $page+1 ?>)</a>
+                    <?php
+                }
+                ?>
+            </div>
             <?php
         }
     }
@@ -74,6 +104,7 @@ class Bdd extends PDO{
                 <li>Date de naissaince : <?= $patient['birthdate'] ?></li>
                 <li>Téléphone : <?= $patient['phone'] ?></li>
                 <li>E-mail : <?= $patient['mail'] ?></li>
+                <li><a href=".<?= $_SERVER["SCRIPT_NAME"].'?modifier='.$patient['id'] ?>">Modifier</a></li>
             </ul>
             <?php
             if($rq->rowCount()>0){
@@ -102,6 +133,10 @@ class Bdd extends PDO{
             $retour = $rq->fetchAll();
         }
         return $retour;
+    }
+    public function modifierPatient($tab){
+        $rq = $this->prepare("UPDATE patients SET lastname = :lastname, idPatients = :idPatients WHERE id = :modifier");
+        return $rq->execute(array("id" => $id));
     }
     public function supprimerPatient($id){
         $rq = $this->prepare("DELETE appointments, patients FROM appointments LEFT JOIN patients ON appointments.idPatients = patients.id WHERE appointments.idPatients = :id");

@@ -10,6 +10,7 @@
         , "profil-patient.php" => false
         , "liste-rendezvous.php" => "Liste des rendez-vous"
         , "rendezvous.php" => false
+        , "ajout-patient-rendez-vous.php" => "Ajouter patient + RDV"
     );
     $listeScripts = scandir('./');
     foreach($listeScripts as $sc){

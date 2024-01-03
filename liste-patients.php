@@ -65,7 +65,7 @@ include './classes/Bdd-Exo-2.class.php';
             <input type="submit" value="Recherche">
         </form>
         <?php
-        $Bdd->afficherListePatients();
+        $Bdd->afficherListePatients((empty($_GET['page'])?1:$_GET['page']));
     }
     ?>
     <?php include "./menu.php" ?>

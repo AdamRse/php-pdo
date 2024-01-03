@@ -15,6 +15,10 @@ include './classes/Bdd-Exo-2.class.php';
         $Bdd = new Bdd();
         $Bdd->afficherPatient($_GET['id']);
     }
+    elseif(!empty($_GET['modifier'])){
+        $Bdd = new Bdd();
+        $Bdd->modifierPatient($_GET['modifier']);
+    }
     else{
         echo "<p>Aucun ID passé en get.</p><a href=\"./liste-patients.php\">Retour</a>";
     }
