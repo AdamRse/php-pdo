@@ -49,8 +49,13 @@ class Bdd extends PDO{
         $rq = $this->prepare("INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, :idPatients)");
         return $rq->execute($tab);
     }
-    public function ajoutPatientEtRdv($tab){
-
+    public function ajoutPatientEtRdv($tab){//A TESTER
+        $tab["lastName"]=$this->majFirst($tab["lastName"]);
+        $tab["firstName"]=$this->majFirst($tab["firstName"]);
+        $sql = "INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail);".(empty($tab["dateHour"]))?"":"
+        INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, LAST_INSERT_ID())";
+        $rq = $this->prepare($sql);
+        return $rq->execute($tab);
     }
     public function afficherListePatients($page = 1){
         $patients = $this->afficherSelectWhile("SELECT * FROM patients LIMIT ".((($page-1)*$this->_taillePage)).", ".$this->_taillePage."", false);

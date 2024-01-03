@@ -20,7 +20,7 @@ include './classes/Bdd-Exo-2.class.php';
                 <input type="number" name="phone" placeholder="Téléphone">
                 <input type="email" name="mail" placeholder="e-mail">
             <h3>RDV</h3>
-            <p>Date du RDV : <input type="datetime-local" name="dateHour"></p>
+            <p>Date du RDV (optionel) : <input type="datetime-local" name="dateHour"></p>
             <input type="submit" value="Envoyer">
         </form>
         <?php
@@ -34,7 +34,7 @@ include './classes/Bdd-Exo-2.class.php';
         }
         if($formValide){
             $bdd = new Bdd();
-            if($bdd->ajoutPatientEtRdv($_GET)){
+            if($bdd->ajoutPatientEtRdv($_GET)){// A TESTER
                 ?>
                 <p>Le patient et son RDV ont bien été ajouté ! </p><a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
                 <?php
