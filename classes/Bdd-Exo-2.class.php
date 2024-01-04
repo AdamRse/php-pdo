@@ -1,7 +1,7 @@
 <?php
 class Bdd extends PDO{
 
-    private $_taillePage = 10;
+    private $_taillePage = 6;
 
     private const sgbd = 'mysql';
     private const server = "127.0.0.1";
@@ -49,7 +49,7 @@ class Bdd extends PDO{
         $rq = $this->prepare("INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, :idPatients)");
         return $rq->execute($tab);
     }
-    public function ajoutPatientEtRdv($tab){//A TESTER
+    public function ajoutPatientEtRdv($tab){
         $tab["lastName"]=$this->majFirst($tab["lastName"]);
         $tab["firstName"]=$this->majFirst($tab["firstName"]);
         $sql = "INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail);".((empty($tab["dateHour"]))?"":" INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, LAST_INSERT_ID())");
@@ -57,37 +57,73 @@ class Bdd extends PDO{
         return $rq->execute($tab);
     }
     public function afficherListePatients($page = 1){
-        $patients = $this->afficherSelectWhile("SELECT * FROM patients LIMIT ".((($page-1)*$this->_taillePage)).", ".$this->_taillePage."", false);
+        $patients = $this->afficherSelectWhile("SELECT * FROM patients ORDER BY lastname LIMIT ".((($page-1)*$this->_taillePage)).", ".$this->_taillePage."", false);
         $rq = $this->query("SELECT count(id) as nbEntrees FROM patients");
         $nbPatients = $rq->fetch(PDO::FETCH_COLUMN);
         $lastPage = ceil($nbPatients/$this->_taillePage);
         if($page>$lastPage) $page = $lastPage;
+        ?>
+        <div class="contCards">
+        <?php
         foreach ($patients as $patient){
             ?>
-            <a href="./profil-patient.php?id=<?= $patient["id"] ?>">
-                <p>
-                    <b><?= $patient["lastname"]." ".$patient["firstname"] ?></b>
-                    </a>
-                    - <a href="./liste-patients.php?supprimer=<?= $patient["id"] ?>">Supprimer</a>
-                </p>
-            <hr/>
+            <div class="card m-2 bg-light tailleCarte">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $patient["lastname"] ?></h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary"><?= $patient["firstname"] ?></h6>
+                    <a href="./profil-patient.php?id=<?= $patient["id"] ?>" class="card-link">Détail</a>
+                    <a href="./profil-patient.php?modifier=<?= $patient["id"] ?>" class="card-link text-warning-emphasis">Modifier</a>
+                    <a href="./liste-patients.php?supprimer=<?= $patient["id"] ?>" class="card-link text-danger">Supprimer</a>
+                </div>
+            </div>
             <?php
         }
+        ?>
+        </div>
+        <?php
         if($nbPatients > $this->_taillePage){
             ?>
             <div style="text-align: center; margin-top: 30px;">
                 <?php
                 if($page>1){
                     ?>
-                    <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page-1) ?>">Page précédente (<?= $page-1 ?>)</a> |
+                    <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page-1) ?>">
+                        <button type="button" class="btn btn-danger mx-2">< Précédent</button>
+                    </a>
+                    <?php
+                    for($i=1;$i<$page;$i++){
+                        ?>
+                        <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=$i" ?>">
+                            <button type="button" class="btn btn-danger mx-2"><?= $i ?></button>
+                        </a>
+                        <?php
+                    }
+                }
+                else{
+                    ?>
+                    <button type="button" class="btn btn-light mx-2">< Précédent</button>
                     <?php
                 }
                 ?>
-                PAGE <?= $page ?>
+                <button type="button" class="btn btn-light mx-2"><?= $page ?></button>
                 <?php
                 if($page<$lastPage){
+                    for($i=$page+1;$i<=$lastPage;$i++){
+                        ?>
+                        <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=$i" ?>">
+                            <button type="button" class="btn btn-danger mx-2"><?= $i ?></button>
+                        </a>
+                        <?php
+                    }
                     ?>
-                    | <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page+1) ?>">Page suivante (<?= $page+1 ?>)</a>
+                    <a href=".<?= $_SERVER["SCRIPT_NAME"]."?page=".($page+1) ?>">
+                        <button type="button" class="btn btn-danger mx-2">Suivant ></button>
+                    </a>
+                    <?php
+                }
+                else{
+                    ?>
+                    <button type="button" class="btn btn-light mx-2">Suivant ></button>
                     <?php
                 }
                 ?>

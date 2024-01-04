@@ -39,5 +39,5 @@ else{
         echo "<p style='color: #931'>Erreur SQL</p>";
     }
 }
-include_once "./menu.php";
+
 include_once "./page/footer.php";

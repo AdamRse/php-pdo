@@ -54,5 +54,4 @@ else{
     echo "<p>Aucun ID passé en get.</p><a href=\"./liste-patients.php\">Retour</a>";
 }
 
-include_once "./menu.php";
 include_once "./page/footer.php";
