@@ -1,35 +1,24 @@
 <?php
 include './classes/Bdd-Exo-2.class.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des rendez-vous</title>
-</head>
-<body>
-    <h1>Liste des rendez-vous</h1>
-    <?php
-    $Bdd = new Bdd();
-    if(!empty($_GET['supprimer'])){
-        if($Bdd->SupprimerRDV($_GET['supprimer'])){
-            ?>
-            <p>Le rendez-vous a bien été supprimé</p>
-            <?php
-        }
-        else{
-            ?>
-            <p>La base de données renvoie une erreur :</p>
-            <p><?= var_dump($Bdd->errorInfo()) ?></p>
-            <?php
-        }
+include_once './page/header.php';
+
+$Bdd = new Bdd();
+if(!empty($_GET['supprimer'])){
+    if($Bdd->SupprimerRDV($_GET['supprimer'])){
+        ?>
+        <p>Le rendez-vous a bien été supprimé</p>
+        <?php
     }
     else{
-        $Bdd->afficherListeRDV();
+        ?>
+        <p>La base de données renvoie une erreur :</p>
+        <p><?= var_dump($Bdd->errorInfo()) ?></p>
+        <?php
     }
-    ?>
-    
-    <?php include "./menu.php" ?>
-</body>
-</html>
+}
+else{
+    $Bdd->afficherListeRDV();
+}
+
+include_once "./menu.php";
+include_once "./page/footer.php";

@@ -1,15 +1,6 @@
 <?php
 include './classes/Bdd-Exo-2.class.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un patient</title>
-</head>
-<body>
-    <?php
+include_once './page/header.php';
     if(empty($_GET)){
         ?>
         <form action=".<?= $_SERVER["SCRIPT_NAME"] ?>" method="get">
@@ -51,7 +42,5 @@ include './classes/Bdd-Exo-2.class.php';
             <?php
         }
     }
-    ?>
-    <?php include "./menu.php" ?>
-</body>
-</html>
+include_once "./menu.php";
+include_once "./page/footer.php";

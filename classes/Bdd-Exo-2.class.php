@@ -52,8 +52,7 @@ class Bdd extends PDO{
     public function ajoutPatientEtRdv($tab){//A TESTER
         $tab["lastName"]=$this->majFirst($tab["lastName"]);
         $tab["firstName"]=$this->majFirst($tab["firstName"]);
-        $sql = "INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail);".(empty($tab["dateHour"]))?"":"
-        INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, LAST_INSERT_ID())";
+        $sql = "INSERT INTO patients (lastName, firstName, birthdate, phone, mail) VALUES (:lastName, :firstName, :birthdate, :phone, :mail);".((empty($tab["dateHour"]))?"":" INSERT INTO appointments (dateHour, idPatients) VALUES (:dateHour, LAST_INSERT_ID())");
         $rq = $this->prepare($sql);
         return $rq->execute($tab);
     }
@@ -140,7 +139,7 @@ class Bdd extends PDO{
         return $retour;
     }
     public function modifierPatient($tab){
-        $rq = $this->prepare("UPDATE patients SET lastname = :lastname, idPatients = :idPatients, birthdate = :birthdate, phone = :phone, mail = :mail WHERE id = :modifier");
+        $rq = $this->prepare("UPDATE patients SET firstname = :firstName, lastname = :lastName, birthdate = :birthdate, phone = :phone, mail = :mail WHERE id = :modifier");
         return $rq->execute($tab);
     }
     public function supprimerPatient($id){

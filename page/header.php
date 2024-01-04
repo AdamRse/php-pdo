@@ -1,7 +1,7 @@
 <?php
 $nomPage = array(
     "ajout-patient.php" => "Ajouter un patient"
-    , "index.php" => "Page principale"
+    , "index.php" => "Accueil"
     , "liste-patients.php" => "Liste les patients"
     , "ajout-rendezvous.php" => "Ajouter un RDV"
     , "profil-patient.php" => false
