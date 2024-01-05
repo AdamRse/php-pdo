@@ -21,22 +21,33 @@ if(empty($_GET['idPatients']) || empty($_GET['dateHour']) ){
         <select name="idPatients">
             <?php
             foreach ($listePatients as $patient){
-                echo "<option value='".$patient["id"]."'>".$patient["lastname"]." ".$patient["firstname"]."</option>";
+                echo "<option value='".$patient["id"]."' ".((!empty($_GET['id']) && $_GET['id'] == $patient["id"])?"selected=\"selected\"":"").">".$patient["lastname"]." ".$patient["firstname"]."</option>";
             }
             ?>
         </select>
         <p>Date du RDV : <input type="datetime-local" name="dateHour"></p>
         <input type="submit" value="Envoyer">
     </form>
-        <?php
-        echo (empty($_GET))?"":"<p style='color: #921'>Requête invalide</p>";
+    <?php
 }
 else{
     if($Bdd->ajouterRdv($_GET)){
-        echo "<p style='color: #193'>Rendez-vous pris !</p>";
+        ?>
+        <div class="alert alert-success" role="alert">
+            Rendez-vous planifié !
+        </div>
+        <?php
     }
     else{
-        echo "<p style='color: #931'>Erreur SQL</p>";
+        ?>
+        <div class="alert alert-danger" role="alert">
+            Erreur SQL :
+            <pre>
+            <?php var_dump($Bdd->errorInfo()) ?>
+            </pre>
+        </div>
+
+        <?php
     }
 }
 

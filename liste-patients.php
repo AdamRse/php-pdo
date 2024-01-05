@@ -9,13 +9,17 @@ $Bdd = new Bdd();
 if(!empty($_GET['supprimer'])){
     if($Bdd->supprimerPatient($_GET['supprimer'])){
         ?>
-        <p>Le patient a bien été supprimé</p>
+        <div class="alert alert-success" role="alert">
+        Le patient a bien été supprimé
+        </div>
         <?php
     }
     else{
         ?>
-        <p>La base de données renvoie une erreur :</p>
-        <p><?= var_dump($Bdd->errorInfo()) ?></p>
+        <div class="alert alert-danger" role="alert">
+            La base de données renvoie une erreur :
+            <pre><?= var_dump($Bdd->errorInfo()) ?></pre>
+        </div>
         <?php
     }
 }
@@ -40,7 +44,9 @@ elseif(!empty($_GET['modifier'])){
         }
         else{
             ?>
-            <p>Erreur de formulaire :<?= $incomplet ?></p>
+            <div class="alert alert-danger" role="alert">
+                Erreur de formulaire : <?= $incomplet ?>
+            </div>
             <?php
         }
     }
@@ -71,13 +77,17 @@ else{
         $cherche = $Bdd->chercherPatient($_GET['cherche']);
         if($cherche === false){
             ?>
-            <p>La requête de recherche a échouée.</p>
+            <div class="alert alert-danger" role="alert">
+                La requête de recherche a échouée.
+            </div>
             <?php
         }
         elseif(!empty($cherche)){
             ?>
             <div class="contCards">
-                <h3>Résultat de la recherche</h3>
+                <div class="alert alert-success" role="alert">
+                    Résultat de la recherche
+                </div>
                 <?php
                 foreach ($cherche as $patient){
                     ?>
@@ -99,7 +109,9 @@ else{
         }
         else{
             ?>
-            <p>Aucun patient trouvé.</p>
+            <div class="alert alert-info" role="alert">
+            Aucun patient trouvé.
+            </div>
             <?php
         }
     }

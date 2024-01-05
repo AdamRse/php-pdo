@@ -28,18 +28,27 @@ else{
         $bdd = new Bdd();
         if($bdd->ajoutPatientEtRdv($_GET)){// A TESTER
             ?>
-            <p>Le patient et son RDV ont bien été ajouté ! </p><a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
+            <div class="alert alert-success" role="alert">
+                Le patient et son RDV ont bien été ajouté ! <a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
+            </div>
             <?php
         }
         else{
             ?>
-            <p>Erreur en base de données.</p><a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
+            <div class="alert alert-danger" role="alert">
+                Erreur SQL :
+                <pre>
+                <?php var_dump($Bdd->errorInfo()) ?>
+                </pre>
+            </div>
             <?php
         }
     }
     else{
         ?>
-        <p>Le formulaire n'est pas remplis correctement.</p><a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
+        <div class="alert alert-danger" role="alert">
+            Le formulaire n'est pas remplis correctement. <a href='.<?= $_SERVER["SCRIPT_NAME"] ?>'>Retour</a>
+        </div>
         <?php
     }
 }

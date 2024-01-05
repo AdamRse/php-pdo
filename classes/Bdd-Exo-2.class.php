@@ -138,30 +138,39 @@ class Bdd extends PDO{
         $rq = $this->prepare("SELECT dateHour FROM appointments WHERE idPatients = :id");
         $rq->execute(array("id" => $id));
         ?>
-        <div>
-            <h3><?= $patient['lastname'].' '.$patient['firstname'] ?></h2>
-            <ul>
-                <li>Date de naissaince : <?= $patient['birthdate'] ?></li>
-                <li>Téléphone : <?= $patient['phone'] ?></li>
-                <li>E-mail : <?= $patient['mail'] ?></li>
-                <li><a href=".<?= $_SERVER["SCRIPT_NAME"].'?modifier='.$patient['id'] ?>">Modifier</a></li>
-            </ul>
-            <?php
-            if($rq->rowCount()>0){
-                ?>
-                <h3><?= ($rq->rowCount()>1)?"Liste des rendez-vous planifiés":"Rendez-vous planifié" ?></h3>
-                <ul>
+        <div class="d-flex justify-content-center">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link"  href="./ajout-rendezvous.php?id=<?= $patient['id'] ?>">Ajouter un rendez-vous</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning-emphasis"  href=".<?= $_SERVER["SCRIPT_NAME"].'?modifier='.$patient['id'] ?>">Modifier</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger"  href="./liste-patients.php?supprimer=<?= $patient['id'] ?>">Supprimer</a>
+                    </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title text-center"><?= $patient['lastname'].' '.$patient['firstname'] ?></h4>
+                    <hr>
+                    <p>Date de naissaince : <?= $patient['birthdate'] ?></p>
+                    <p>Téléphone : <?= $patient['phone'] ?></p>
+                    <p>E-mail : <?= $patient['mail'] ?></p>
+                </div>
+                <ul class="list-group list-group-flush text-center">
                     <?php
-                    while($rdv = $rq->fetch(PDO::FETCH_ASSOC)){
-                        $dt = new DateTime($rdv["dateHour"]);
-                        echo "<li>".$dt->format('\L\e m/d/Y à H\hi')."</li>";
-                    }
+                        while($rdv = $rq->fetch(PDO::FETCH_ASSOC)){
+                            $dt = new DateTime($rdv["dateHour"]);
+                            ?>
+                            <li class="list-group-item bg-danger text-white">RDV Le <?= $dt->format('m/d/Y à H\hi') ?></li>
+                            <?php
+                        }
                     ?>
                 </ul>
-                <?php
-            }
-            ?>
-            <hr/>
+            </div>
         </div>
         <?php
     }
@@ -175,6 +184,8 @@ class Bdd extends PDO{
         return $retour;
     }
     public function modifierPatient($tab){
+        $tab['firstName']=$this->majFirst($tab['firstName']);
+        $tab['lastName']=$this->majFirst($tab['lastName']);
         $rq = $this->prepare("UPDATE patients SET firstname = :firstName, lastname = :lastName, birthdate = :birthdate, phone = :phone, mail = :mail WHERE id = :modifier");
         return $rq->execute($tab);
     }

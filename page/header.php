@@ -26,7 +26,7 @@ require_once "init.php";
                     if(substr($sc, 1)!="." && !is_dir("./$sc") && $sc != "index.php" && ((!empty($nomPage[$sc]) || !isset($nomPage[$sc])))){
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link<?= ($sc == SCRIPT_NAME )?" active activeP":""; ?> text-white" aria-current="page" href="./<?= $sc ?>"><?= (empty($nomPage[$sc]))?$sc:$nomPage[$sc] ?></a>
+                            <a class="nav-link <?= ($sc == SCRIPT_NAME )?"active activeP text-warning":"text-white"; ?>" aria-current="page" href="./<?= $sc ?>"><?= (empty($nomPage[$sc]))?$sc:$nomPage[$sc] ?></a>
                         </li>
                         <?php
                     }

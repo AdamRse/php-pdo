@@ -6,8 +6,8 @@ html,body{
     min-height: 100vh;
     /* background: url('../img/hopital.png');
     background-position:center;
-    background-size:cover;
-} */
+    background-size:cover;*/
+} 
 h1{
     font-size: 2rem;
     padding-bottom: 1%;
@@ -62,4 +62,7 @@ h2{
 }
 .nav-item .activeP{
     text-shadow: 0 0 10px #000;
+}
+.card-body p{
+    margin: 0;
 }
